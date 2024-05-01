@@ -1,21 +1,26 @@
-// testing.cs
-
+// Game.cs
 using System;
-using System.Diagnostics;
 
 namespace CMP1903M
 {
-    class Testing
+    public abstract class Game
     {
-        public static void RunTests()
+        public abstract void PlayAgainstComputer();
+        public abstract void PlayAgainstPlayer();
+    }
+
+    public class SevensOut : Game
+    {
+        private Die die;
+
+        public SevensOut()
         {
-            Debug.Assert(TestSevensOut());
-            Debug.Assert(TestThreeOrMore());
+            die = new Die();
         }
 
-        private static bool TestSevensOut()
+        public override void PlayAgainstComputer()
         {
-            Die die = new Die();
+            Console.WriteLine("Playing Sevens Out against computer...");
             int total = 0;
             int rollCount = 0;
 
@@ -23,20 +28,43 @@ namespace CMP1903M
             {
                 int roll = die.Roll();
                 rollCount++;
+                Console.WriteLine($"Roll {rollCount}: {roll}");
+
                 total += roll;
-                Debug.Assert(total <= 7, $"Total exceeded 7: {total}");
                 if (total >= 7)
                 {
+                    Console.WriteLine($"Total is {total}. Game Over!");
                     break;
                 }
             }
 
-            return true;
+            Statistics.Update("SevensOut", rollCount, total);
         }
 
-        private static bool TestThreeOrMore()
+        public override void PlayAgainstPlayer()
         {
-            Die die = new Die();
+            Console.WriteLine("Playing Sevens Out against another player...");
+
+            Console.WriteLine("Player 1's turn:");
+            PlayAgainstComputer();
+
+            Console.WriteLine("Player 2's turn:");
+            PlayAgainstComputer();
+        }
+    }
+
+    public class ThreeOrMore : Game
+    {
+        private Die die;
+
+        public ThreeOrMore()
+        {
+            die = new Die();
+        }
+
+        public override void PlayAgainstComputer()
+        {
+            Console.WriteLine("Playing Three Or More against computer...");
             int total = 0;
             int rollCount = 0;
 
@@ -44,15 +72,28 @@ namespace CMP1903M
             {
                 int roll = die.Roll();
                 rollCount++;
+                Console.WriteLine($"Roll {rollCount}: {roll}");
+
                 total += roll;
-                Debug.Assert(total < 20, $"Total exceeded 20: {total}");
                 if (total >= 20)
                 {
+                    Console.WriteLine($"Total is {total}. Game Over!");
                     break;
                 }
             }
 
-            return true;
+            Statistics.Update("ThreeOrMore", rollCount, total);
+        }
+
+        public override void PlayAgainstPlayer()
+        {
+            Console.WriteLine("Playing Three Or More against another player...");
+
+            Console.WriteLine("Player 1's turn:");
+            PlayAgainstComputer();
+
+            Console.WriteLine("Player 2's turn:");
+            PlayAgainstComputer();
         }
     }
 }
