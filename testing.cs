@@ -1,5 +1,3 @@
-// testing.cs
-
 using System;
 using System.Diagnostics;
 
