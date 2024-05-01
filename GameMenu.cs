@@ -1,4 +1,3 @@
-// GameMenu.cs
 using System;
 
 namespace CMP1903M
